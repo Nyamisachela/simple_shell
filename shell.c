@@ -10,7 +10,9 @@ int main(int argc, char **argv)
 	char *prompt, *lineptr; /* lineptr = input from user */
 	size_t n = 0; /* size of the buffer lineptr */
 	ssize_t getline_return  = 0;/*could be no of xters or -1(failure)*/
+	char *exit;
 
+	exit = "exit";
 	(void)argc;
 	argv = malloc(sizeof(char *) * BUFFER_SIZE);
 	prompt = ">- ";
@@ -27,6 +29,10 @@ int main(int argc, char **argv)
 		{
 			argv = split_input(lineptr);
 			argc = arg_count(argv);
+		}
+		if (strcmp(*argv, exit) == 0)
+		{
+			break;
 		}
 		execute(argv);
 	}
