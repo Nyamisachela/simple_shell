@@ -8,11 +8,14 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 #define BUFFER_SIZE 1024
 
 /* Function Prototypes */
-int main(void);
+int main(int, char **);
 char **split_input(char *);
 int arg_count(char **);
+void execute(char **);
+char *get_path(char *command);
 #endif

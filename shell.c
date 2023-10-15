@@ -5,15 +5,14 @@
 *@argv: null terminated array of string arguments
 *Return: 0 upon success.
 */
-int main(void)
+int main(int argc, char **argv)
 {
-	char *prompt, *lineptr, **argv; /* lineptr = input from user */
+	char *prompt, *lineptr; /* lineptr = input from user */
 	size_t n = 0; /* size of the buffer lineptr */
 	ssize_t getline_return  = 0;/*could be no of xters or -1(failure)*/
-	int argc;
 
-	argc = 0;
-	argv = malloc(sizeof(char*) * BUFFER_SIZE);
+	(void)argc;
+	argv = malloc(sizeof(char *) * BUFFER_SIZE);
 	prompt = ">- ";
 	while (1)
 	{
@@ -29,7 +28,7 @@ int main(void)
 			argv = split_input(lineptr);
 			argc = arg_count(argv);
 		}
-		printf("there are %d arguments\n", argc);
+		execute(argv);
 	}
 	free(lineptr);/* free the buffer */
 	return (0);
