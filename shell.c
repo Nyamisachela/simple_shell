@@ -12,17 +12,18 @@ int main(int argc, char **argv)
 	ssize_t getline_return  = 0;/*could be no of xters or -1(failure)*/
 	char *exit;
 
+	prompt = malloc(BUFFER_SIZE * sizeof(char));
+	_strcpy(prompt, ">_ ");
 	exit = "exit";
 	(void)argc;
 	argv = malloc(sizeof(char *) * BUFFER_SIZE);
-	prompt = ">- ";
 	while (1)
 	{
-		printf("%s", prompt);
+		write(1, prompt, _strlen(prompt));
 		getline_return = getline(&lineptr, &n, stdin);
 		if (getline_return < 0)
 		{/* Checks if getline failed or encountered EOF */
-			printf("\n");
+			write(1, "\n", 1);
 			return (-1);
 		}
 		else
@@ -37,5 +38,6 @@ int main(int argc, char **argv)
 		execute(argv);
 	}
 	free(lineptr);/* free the buffer */
+	free(prompt);
 	return (0);
 }
