@@ -40,7 +40,7 @@ void execute(char **argv)
 		else
 		{
 			/* This code runs in the parent process */
-			waitpid(child_pid, &status, 0); 
+			waitpid(child_pid, &status, 0);
 			/* Wait for the child to finish */
 		}
 	}
