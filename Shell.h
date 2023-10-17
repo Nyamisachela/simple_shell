@@ -18,4 +18,8 @@ char **split_input(char *);
 int arg_count(char **);
 void execute(char **);
 char *get_path(char *command);
+void print_env(void);
+
+/* external variables */
+extern char **environ;
 #endif
