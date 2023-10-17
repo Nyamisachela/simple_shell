@@ -19,6 +19,10 @@ int arg_count(char **);
 void execute(char **);
 char *get_path(char *command);
 void print_env(void);
+char *_strcpy(char *dest, char *src);
+int _strlen(char *s);
+char *_strcat(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
 
 /* external variables */
 extern char **environ;

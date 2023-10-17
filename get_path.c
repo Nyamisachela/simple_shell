@@ -21,10 +21,10 @@ char *get_path(char *cmd)
 		{
 			dir_len = strlen(path_token);
 			file_path = malloc(cmd_length + dir_len + 2);
-			strcpy(file_path, path_token);
-			strcat(file_path, "/");
-			strcat(file_path, cmd);
-			strcat(file_path, "\0");
+			_strcpy(file_path, path_token);
+			_strcat(file_path, "/");
+			_strcat(file_path, cmd);
+			_strcat(file_path, "\0");
 
 			if (stat(file_path, &buffer) == 0)
 			{

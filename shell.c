@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 			argv = split_input(lineptr);
 			argc = arg_count(argv);
 		}
-		if (strcmp(*argv, exit) == 0)
+		if (_strcmp(*argv, exit) == 0)
 		{
 			break;
 		}
