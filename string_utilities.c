@@ -21,15 +21,15 @@ char **split_input(char *lineptr)
 		perror("Memory allocation error");
 		exit(1);
 	}
-	strcpy(input_cpy, lineptr);
+	_strcpy(input_cpy, lineptr);
 	delim = " \n";
 	i = 0;
 	token = strtok(input_cpy, delim);
 	while (token != NULL)
 	{
 		/* Allocate memory for each token (+1 for null terminator) */
-		argv[i] = malloc(strlen(token) + 1);
-		strcpy(argv[i], token);
+		argv[i] = malloc(_strlen(token) + 1);
+		_strcpy(argv[i], token);
 		token = strtok(NULL, delim);
 		i++;
 	}
