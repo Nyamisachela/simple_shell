@@ -19,7 +19,6 @@ void execute(char **argv)
 		if (strcmp(cmd, "env") == 0)
 		{
 			print_env();
-			return;
 		}
 
 		/* Fork a child process */
