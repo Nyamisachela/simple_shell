@@ -5,23 +5,23 @@
  * @data: The struct for the program's data.
  * Return: Returns zero on success, or an error code if specified.
  */
-int builtin_exit(data_of_program *data)
+int builtin_exit(ProgramInfo *data)
 {
 	int i;
 
-	if (data->tokens[1] != NULL)
+	if (data->arguments[1] != NULL)
 	{
 		/* Check if an argument exists for exit and verify if it's a number. */
-		for (i = 0; data->tokens[1][i]; i++)
+		for (i = 0; data->arguments[1][i]; i++)
 		{
-			if ((data->tokens[1][i] < '0' || data->tokens[1][i] > '9') &&
-			    data->tokens[1][i] != '+')
+			if ((data->arguments[1][i] < '0' || data->arguments[1][i] > '9') &&
+			    data->arguments[1][i] != '+')
 			{
 				errno = 2;
 				return (2); /* Indicate an error. */
 			}
 		}
-		errno = _atoi(data->tokens[1]);
+		errno = _atoi(data->arguments[1]);
 	}
 
 	/* Free allocated memory and exit with the specified status. */
@@ -34,16 +34,16 @@ int builtin_exit(data_of_program *data)
  * @data: The struct for the program's data.
  * Return: Returns zero on success, or an error code if specified.
  */
-int builtin_cd(data_of_program *data)
+int builtin_cd(ProgramInfo *data)
 {
 	char *dir_home = env_get_key("HOME", data);
 	char *dir_old = NULL;
 	char old_dir[128] = {0};
 	int error_code = 0;
 
-	if (data->tokens[1])
+	if (data->arguments[1])
 	{
-		if (str_compare(data->tokens[1], "-", 0))
+		if (str_compare(data->arguments[1], "-", 0))
 		{
 			dir_old = env_get_key("OLDPWD", data);
 			if (dir_old)
@@ -54,7 +54,7 @@ int builtin_cd(data_of_program *data)
 		}
 		else
 		{
-			return set_work_directory(data, data->tokens[1]);
+			return set_work_directory(data, data->arguments[1]);
 		}
 	}
 	else
@@ -72,7 +72,7 @@ int builtin_cd(data_of_program *data)
  * @new_dir: The path to be set as the working directory.
  * Return: Returns zero on success, or an error code if specified.
  */
-int set_work_directory(data_of_program *data, char *new_dir)
+int set_work_directory(ProgramInfo *data, char *new_dir)
 {
 	char old_dir[128] = {0};
 	int err_code = 0;
@@ -98,7 +98,7 @@ int set_work_directory(data_of_program *data, char *new_dir)
  * @data: The struct for the program's data.
  * Return: Returns zero on success, or an error code if specified.
  */
-int builtin_help(data_of_program *data)
+int builtin_help(ProgramInfo *data)
 {
 	int i, length = 0;
 	char *messages[6] = {NULL};
@@ -106,15 +106,15 @@ int builtin_help(data_of_program *data)
 	messages[0] = HELP_MSG;
 
 	/* Check if arguments are provided. */
-	if (data->tokens[1] == NULL)
+	if (data->arguments[1] == NULL)
 	{
 		_print(messages[0] + 6);
 		return 1;
 	}
-	if (data->tokens[2] != NULL)
+	if (data->arguments[2] != NULL)
 	{
 		errno = E2BIG;
-		perror(data->command_name);
+		perror(data->currentCommand);
 		return 5; /* Indicate an error. */
 	}
 
@@ -126,8 +126,8 @@ int builtin_help(data_of_program *data)
 
 	for (i = 0; messages[i]; i++)
 	{
-		length = str_length(data->tokens[1]);
-		if (str_compare(data->tokens[1], messages[i], length))
+		length = str_length(data->arguments[1]);
+		if (str_compare(data->arguments[1], messages[i], length))
 		{
 			_print(messages[i] + length + 1);
 			return 1;
@@ -135,7 +135,7 @@ int builtin_help(data_of_program *data)
 	}
 
 	errno = EINVAL;
-	perror(data->command_name);
+	perror(data->currentCommand);
 	return 0;
 }
 
@@ -144,20 +144,20 @@ int builtin_help(data_of_program *data)
  * @data: The struct for the program's data.
  * Return: Returns zero on success, or an error code if specified.
  */
-int builtin_alias(data_of_program *data)
+int builtin_alias(ProgramInfo *data)
 {
 	int i = 0;
 
 	/* If there are no arguments, print all environment variables. */
-	if (data->tokens[1] == NULL)
+	if (data->arguments[1] == NULL)
 		return print_alias(data, NULL);
 
-	while (data->tokens[++i])
+	while (data->arguments[++i])
 	{
-		if (count_characters(data->tokens[i], "="))
-			set_alias(data->tokens[i], data);
+		if (count_characters(data->arguments[i], "="))
+			set_alias(data->arguments[i], data);
 		else
-			print_alias(data, data->tokens[i]);
+			print_alias(data, data->arguments[i]);
 	}
 
 	return 0;

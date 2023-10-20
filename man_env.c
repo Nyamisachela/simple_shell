@@ -6,7 +6,7 @@
  * @data: The struct of the program's data.
  * Return: A pointer to the value of the variable or NULL if it doesn't exist.
  */
-char *env_get_key(char *key, data_of_program *data)
+char *env_get_key(char *key, ProgramInfo *data)
 {
 	int i, key_length = 0;
 
@@ -38,7 +38,7 @@ char *env_get_key(char *key, data_of_program *data)
  * @data: The struct of the program's data.
  * Return: Returns 1 if the parameters are NULL, 2 if there is an error, or 0 on success.
  */
-int env_set_key(char *key, char *value, data_of_program *data)
+int env_set_key(char *key, char *value, ProgramInfo *data)
 {
 	int i, key_length = 0, is_new_key = 1;
 
@@ -84,7 +84,7 @@ int env_set_key(char *key, char *value, data_of_program *data)
  * @data: The structure of the program's data.
  * Return: Returns 1 if the key was removed, 0 if the key does not exist.
  */
-int env_remove_key(char *key, data_of_program *data)
+int env_remove_key(char *key, ProgramInfo *data)
 {
 	int i, key_length = 0;
 
@@ -123,7 +123,7 @@ int env_remove_key(char *key, data_of_program *data)
  * @data: The struct for the program's data.
  * Return: Returns nothing.
  */
-void print_environ(data_of_program *data)
+void print_environ(ProgramInfo *data)
 {
 	int j;
 

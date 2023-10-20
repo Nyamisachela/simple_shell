@@ -5,7 +5,7 @@
  * @data: A pointer to the program's data.
  * Return: Returns 0 on success, or -1 on failure.
  */
-int execute(data_of_program *data)
+int execute(ProgramInfo *data)
 {
 	int retval = 0, status;
 	pid_t child_pid;
@@ -32,17 +32,17 @@ int execute(data_of_program *data)
 		if (child_pid == -1)
 		{
 			/* Fork call failed, print an error message. */
-			perror(data->command_name);
+			perror(data->currentCommand);
 			exit(EXIT_FAILURE);
 		}
 		if (child_pid == 0)
 		{
 			/* Child process: execute the program. */
-			retval = execve(data->tokens[0], data->tokens, data->env);
+			retval = execve(data->arguments[0], data->arguments, data->env);
 			if (retval == -1)
 			{
 				/* Error occurred during execve, print an error message. */
-				perror(data->command_name);
+				perror(data->currentCommand);
 				exit(EXIT_FAILURE);
 			}
 		}

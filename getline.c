@@ -6,7 +6,7 @@
 *
 * Return: Number of bytes read.
 */
-int _getline(data_of_program *data)
+int _getline(ProgramInfo *data)
 {
 	char buff[BUFFER_SIZE] = {'\0'};
 	static char *array_commands[10] = {NULL};
@@ -26,7 +26,7 @@ int _getline(data_of_program *data)
 		}
 
 		/* Read from the file descriptor into buff */
-		bytes_read = read(data->file_descriptor, &buff, BUFFER_SIZE - 1);
+		bytes_read = read(data->fd, &buff, BUFFER_SIZE - 1);
 		if (bytes_read == 0)
 			return (-1);
 
@@ -40,14 +40,14 @@ int _getline(data_of_program *data)
 	}
 
 	/* Get the next command (command 0) and remove it from the array */
-	data->input_line = array_commands[0];
+	data->input = array_commands[0];
 	for (i = 0; array_commands[i]; i++)
 	{
 		array_commands[i] = array_commands[i + 1];
 		array_operators[i] = array_operators[i + 1];
 	}
 
-	return (str_length(data->input_line));
+	return (str_length(data->input));
 }
 
 /**

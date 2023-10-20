@@ -6,28 +6,28 @@
  * @alias: The name of the alias to be printed.
  * Return: 0 if successful, or an error code if specified in the arguments.
  */
-int print_alias(data_of_program *data, char *alias)
+int print_alias(ProgramInfo *data, char *alias)
 {
 	int i, j, alias_length;
 	char buffer[250] = {'\0'};
 
-	if (data->alias_list)
+	if (data->aliases)
 	{
 		alias_length = str_length(alias);
-		for (i = 0; data->alias_list[i]; i++)
+		for (i = 0; data->aliases[i]; i++)
 		{
-			if (!alias || (str_compare(data->alias_list[i], alias, alias_length)
-				&&	data->alias_list[i][alias_length] == '='))
+			if (!alias || (str_compare(data->aliases[i], alias, alias_length)
+				&&	data->aliases[i][alias_length] == '='))
 			{
-				for (j = 0; data->alias_list[i][j]; j++)
+				for (j = 0; data->aliases[i][j]; j++)
 				{
-					buffer[j] = data->alias_list[i][j];
-					if (data->alias_list[i][j] == '=')
+					buffer[j] = data->aliases[i][j];
+					if (data->aliases[i][j] == '=')
 						break;
 				}
 				buffer[j + 1] = '\0';
 				buffer_add(buffer, "'");
-				buffer_add(buffer, data->alias_list[i] + j + 1);
+				buffer_add(buffer, data->aliases[i] + j + 1);
 				buffer_add(buffer, "'\n");
 				_print(buffer);
 			}
@@ -43,21 +43,21 @@ int print_alias(data_of_program *data, char *alias)
  * @name: The name of the requested alias.
  * Return: The value of the alias if found, or NULL if not found.
  */
-char *get_alias(data_of_program *data, char *name)
+char *get_alias(ProgramInfo *data, char *name)
 {
 	int i, alias_length;
 
-	if (name == NULL || data->alias_list == NULL)
+	if (name == NULL || data->aliases == NULL)
 		return (NULL);
 
 	alias_length = str_length(name);
 
-	for (i = 0; data->alias_list[i]; i++)
+	for (i = 0; data->aliases[i]; i++)
 	{
-		if (str_compare(name, data->alias_list[i], alias_length) &&
-			data->alias_list[i][alias_length] == '=')
+		if (str_compare(name, data->aliases[i], alias_length) &&
+			data->aliases[i][alias_length] == '=')
 		{
-			return (data->alias_list[i] + alias_length + 1);
+			return (data->aliases[i] + alias_length + 1);
 		}
 	}
 
@@ -70,12 +70,12 @@ char *get_alias(data_of_program *data, char *name)
  * @data: The struct for the program's data.
  * Return: 0 if successful, or 1 if an error occurs.
  */
-int set_alias(char *alias_string, data_of_program *data)
+int set_alias(char *alias_string, ProgramInfo *data)
 {
 	int i, j;
 	char buffer[250] = {'0'}, *temp = NULL;
 
-	if (alias_string == NULL ||  data->alias_list == NULL)
+	if (alias_string == NULL ||  data->aliases == NULL)
 		return (1);
 
 	for (i = 0; alias_string[i]; i++)
@@ -89,12 +89,12 @@ int set_alias(char *alias_string, data_of_program *data)
 		}
 	}
 
-	for (j = 0; data->alias_list[j]; j++)
+	for (j = 0; data->aliases[j]; j++)
 	{
-		if (str_compare(buffer, data->alias_list[j], i) &&
-			data->alias_list[j][i] == '=')
+		if (str_compare(buffer, data->aliases[j], i) &&
+			data->aliases[j][i] == '=')
 		{
-			free(data->alias_list[j]);
+			free(data->aliases[j]);
 			break;
 		}
 	}
@@ -103,11 +103,11 @@ int set_alias(char *alias_string, data_of_program *data)
 	{
 		buffer_add(buffer, "=");
 		buffer_add(buffer, temp);
-		data->alias_list[j] = str_duplicate(buffer);
+		data->aliases[j] = str_duplicate(buffer);
 	}
 	else
 	{
-		data->alias_list[j] = str_duplicate(alias_string);
+		data->aliases[j] = str_duplicate(alias_string);
 	}
 
 	return (0);

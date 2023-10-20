@@ -6,12 +6,12 @@
  * Return: The return value of the executed function if there is a match,
  *         otherwise, it returns -1.
  */
-int builtins_list(data_of_program *data)
+int builtins_list(ProgramInfo *data)
 {
 	int iterator;
 	builtins options[] = {
-		{"exit", builtin_exit},
 		{"help", builtin_help},
+		{"exit", builtin_exit},
 		{"cd", builtin_cd},
 		{"alias", builtin_alias},
 		{"env", builtin_env},
@@ -24,7 +24,7 @@ int builtins_list(data_of_program *data)
 	for (iterator = 0; options[iterator].builtin != NULL; iterator++)
 	{
 		/* Check if there is a match between the given command and a built-in. */
-		if (str_compare(options[iterator].builtin, data->command_name, 0))
+		if (str_compare(options[iterator].builtin, data->currentCommand, 0))
 		{
 			/* Execute the function and return its return value. */
 			return (options[iterator].function(data));

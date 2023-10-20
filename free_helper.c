@@ -5,18 +5,18 @@
  * @data: A pointer to the program's data.
  * Return: This function has no return value.
  */
-void free_recurrent_data(data_of_program *data)
+void free_recurrent_data(ProgramInfo *data)
 {
-	if (data->tokens)
-		free_array_of_pointers(data->tokens);
-	if (data->input_line)
-		free(data->input_line);
-	if (data->command_name)
-		free(data->command_name);
+	if (data->arguments)
+		free_array_of_pointers(data->arguments);
+	if (data->input)
+		free(data->input);
+	if (data->currentCommand)
+		free(data->currentCommand);
 
-	data->input_line = NULL;
-	data->command_name = NULL;
-	data->tokens = NULL;
+	data->input = NULL;
+	data->currentCommand = NULL;
+	data->arguments = NULL;
 }
 
 /**
@@ -24,16 +24,16 @@ void free_recurrent_data(data_of_program *data)
  * @data: A pointer to the program's data.
  * Return: This function has no return value.
  */
-void free_all_data(data_of_program *data)
+void free_all_data(ProgramInfo *data)
 {
-	if (data->file_descriptor != 0)
+	if (data->fd != 0)
 	{
-		if (close(data->file_descriptor))
-			perror(data->program_name);
+		if (close(data->fd))
+			perror(data->name);
 	}
 	free_recurrent_data(data);
 	free_array_of_pointers(data->env);
-	free_array_of_pointers(data->alias_list);
+	free_array_of_pointers(data->aliases);
 }
 
 /**

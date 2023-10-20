@@ -14,13 +14,13 @@ int check_file(char *full_path)
 		if (S_ISDIR(sb.st_mode) || access(full_path, X_OK))
 		{
 			errno = 126;
-			return (126);
+			return (errno);
 		}
 		return (0);
 	}
 	/* Return an errno code if the file does not exist. */
 	errno = 127;
-	return (127);
+	return (errno);
 }
 
 /**
@@ -28,21 +28,21 @@ int check_file(char *full_path)
  * @data: A pointer to the program's data.
  * Return: Return 0 if successful, an error code otherwise.
  */
-int find_program(data_of_program *data)
+int find_program(ProgramInfo *data)
 {
 	int i = 0, ret_code = 0;
 	char **directories;
 
-	if (!data->command_name)
+	if (!data->currentCommand)
 		return (2);
 
 	/* Check if it's a full path or an executable in the same path. */
-	if (data->command_name[0] == '/' || data->command_name[0] == '.')
-		return (check_file(data->command_name));
+	if (data->currentCommand[0] == '/' || data->currentCommand[0] == '.')
+		return (check_file(data->currentCommand));
 
-	free(data->tokens[0]);
-	data->tokens[0] = str_concat(str_duplicate("/"), data->command_name);
-	if (!data->tokens[0])
+	free(data->arguments[0]);
+	data->arguments[0] = str_concat(str_duplicate("/"), data->currentCommand);
+	if (!data->arguments[0])
 		return (2);
 
 	directories = tokenize_path(data);
@@ -55,19 +55,19 @@ int find_program(data_of_program *data)
 
 	for (i = 0; directories[i]; i++)
 	{
-		directories[i] = str_concat(directories[i], data->tokens[0]);
+		directories[i] = str_concat(directories[i], data->arguments[0]);
 		ret_code = check_file(directories[i]);
 		if (ret_code == 0 || ret_code == 126)
 		{
 			errno = 0;
-			free(data->tokens[0]);
-			data->tokens[0] = str_duplicate(directories[i]);
+			free(data->arguments[0]);
+			data->arguments[0] = str_duplicate(directories[i]);
 			free_array_of_pointers(directories);
 			return (ret_code);
 		}
 	}
-	free(data->tokens[0]);
-	data->tokens[0] = NULL;
+	free(data->arguments[0]);
+	data->arguments[0] = NULL;
 	free_array_of_pointers(directories);
 	return (ret_code);
 }
@@ -77,11 +77,11 @@ int find_program(data_of_program *data)
  * @data: A pointer to the program's data.
  * Return: An array of path directories.
  */
-char **tokenize_path(data_of_program *data)
+char **tokenize_path(ProgramInfo *data)
 {
 	int i = 0;
 	int num_directories = 2;
-	char **tokens = NULL;
+	char **arguments = NULL;
 	char *PATH;
 
 	/* Get the value of the PATH environment variable. */
@@ -101,17 +101,17 @@ char **tokenize_path(data_of_program *data)
 			num_directories++;
 	}
 
-	tokens = malloc(sizeof(char *) * num_directories);
+	arguments = malloc(sizeof(char *) * num_directories);
 
 	i = 0;
-	tokens[i] = str_duplicate(_strtok(PATH, ":"));
+	arguments[i] = str_duplicate(_strtok(PATH, ":"));
 
-	while (tokens[i++])
+	while (arguments[i++])
 	{
-		tokens[i] = str_duplicate(_strtok(NULL, ":"));
+		arguments[i] = str_duplicate(_strtok(NULL, ":"));
 	}
 
 	free(PATH);
 	PATH = NULL;
-	return (tokens);
+	return (arguments);
 }

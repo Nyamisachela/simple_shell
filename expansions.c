@@ -5,15 +5,15 @@
  * @data: A pointer to the program's data struct.
  * Return: This function does not return a value but sets error if necessary.
  */
-void expand_variables(data_of_program *data)
+void expand_variables(ProgramInfo *data)
 {
 	int i, j;
 	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-	if (data->input_line == NULL)
+	if (data->input == NULL)
 		return;
 
-	buffer_add(line, data->input_line);
+	buffer_add(line, data->input);
 
 	for (i = 0; line[i]; i++)
 	{
@@ -24,14 +24,14 @@ void expand_variables(data_of_program *data)
 			line[i] = '\0';
 			long_to_string(errno, expansion, 10);
 			buffer_add(line, expansion);
-			buffer_add(line, data->input_line + i + 2);
+			buffer_add(line, data->input + i + 2);
 		}
 		else if (line[i] == '$' && line[i + 1] == '$')
 		{
 			line[i] = '\0';
 			long_to_string(getpid(), expansion, 10);
 			buffer_add(line, expansion);
-			buffer_add(line, data->input_line + i + 2);
+			buffer_add(line, data->input + i + 2);
 		}
 		else if (line[i] == '$' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 			continue;
@@ -48,10 +48,10 @@ void expand_variables(data_of_program *data)
 		}
 	}
 
-	if (!str_compare(data->input_line, line, 0))
+	if (!str_compare(data->input, line, 0))
 	{
-		free(data->input_line);
-		data->input_line = str_duplicate(line);
+		free(data->input);
+		data->input = str_duplicate(line);
 	}
 }
 
@@ -60,15 +60,15 @@ void expand_variables(data_of_program *data)
  * @data: A pointer to the program's data struct.
  * Return: This function does not return a value but sets error if necessary.
  */
-void expand_alias(data_of_program *data)
+void expand_alias(ProgramInfo *data)
 {
 	int i, j, was_expanded = 0;
 	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-	if (data->input_line == NULL)
+	if (data->input == NULL)
 		return;
 
-	buffer_add(line, data->input_line);
+	buffer_add(line, data->input);
 
 	for (i = 0; line[i]; i++)
 	{
@@ -92,8 +92,8 @@ void expand_alias(data_of_program *data)
 
 	if (was_expanded)
 	{
-		free(data->input_line);
-		data->input_line = str_duplicate(line);
+		free(data->input);
+		data->input = str_duplicate(line);
 	}
 }
 

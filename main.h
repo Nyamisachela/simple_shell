@@ -20,27 +20,27 @@
 /******* STRUCTURES ********/
 
 /**
- * struct info - Structure for program data
- * @program_name: Name of the executable
- * @input_line: Pointer to the input read from _getline
- * @command_name: Pointer to the first command typed by the user
- * @exec_counter: Number of executed commands
- * @file_descriptor: File descriptor for input of commands
- * @tokens: Pointer to an array of tokenized input
- * @env: Copy of the environment variables
- * @alias_list: Array of pointers with aliases
+ * struct info - Structure for program dataset
+ * @name: The name of the program
+ * @input: Input data or command line
+ * @currentCommand: The current command being processed
+ * @executionCount: Number of times the command has been executed
+ * @fd: File descriptor associated with the program
+ * @arguments:An array of command arguments
+ * @env: Environment variables or related information
+ * @aliases: List of command aliases
  */
-typedef struct info
-{
-    char *program_name;
-    char *input_line;
-    char *command_name;
-    int exec_counter;
-    int file_descriptor;
-    char **tokens;
-    char **env;
-    char **alias_list;
-} data_of_program;
+ typedef struct ProgramInfo
+ {
+    char *name;              
+    char *input;             
+    char *currentCommand;    
+    int executionCount;      
+    int fd;      
+    char **arguments;        
+    char **env;      
+    char **aliases;          
+} ProgramInfo;
 
 /**
  * struct builtins - Structure for built-in commands
@@ -50,52 +50,52 @@ typedef struct info
 typedef struct builtins
 {
     char *builtin;
-    int (*function)(data_of_program *data);
+    int (*function)(ProgramInfo *data);
 } builtins;
 
 /***** MAIN FUNCTIONS ******/
 
 /* Initialize the struct with program data */
-void initialize_data(data_of_program *data, int argc, char *argv[], char **env);
+void initialize_data(ProgramInfo *data, int argc, char *argv[], char **env);
 
 /* Create an infinite loop that displays the prompt */
-void our_prompt(char *prompt, data_of_program *data);
+void our_prompt(char *prompt, ProgramInfo *data);
 
 /* Print the prompt in a new line */
 void handle_ctrl_c(int operation UNUSED);
 
 /* Read one line from standard input */
-int _getline(data_of_program *data);
+int _getline(ProgramInfo *data);
 
 /* Split each line by logical operators if they exist */
 int check_logic_ops(char *array_commands[], int i, char array_operators[]);
 
 /* Expand variables */
-void expand_variables(data_of_program *data);
+void expand_variables(ProgramInfo *data);
 
 /* Expand aliases */
-void expand_alias(data_of_program *data);
+void expand_alias(ProgramInfo *data);
 
 /* Append a string to the end of the buffer */
 int buffer_add(char *buffer, char *str_to_add);
 
 /* Separate a string into tokens using a specified delimiter */
-void tokenize(data_of_program *data);
+void tokenize(ProgramInfo *data);
 
 /* Create a pointer to a part of a string */
 char *_strtok(char *line, char *delim);
 
 /* Execute a command with its entire path */
-int execute(data_of_program *data);
+int execute(ProgramInfo *data);
 
 /* Match a built-in command and execute it */
-int builtins_list(data_of_program *data);
+int builtins_list(ProgramInfo *data);
 
 /* Create an array of path directories */
-char **tokenize_path(data_of_program *data);
+char **tokenize_path(ProgramInfo *data);
 
 /* Search for a program in the PATH */
-int find_program(data_of_program *data);
+int find_program(ProgramInfo *data);
 
 /****** HELPERS FOR MEMORY MANAGEMENT ******/
 
@@ -103,50 +103,50 @@ int find_program(data_of_program *data);
 void free_array_of_pointers(char **directories);
 
 /* Free the fields needed in each loop */
-void free_recurrent_data(data_of_program *data);
+void free_recurrent_data(ProgramInfo *data);
 
 /* Free all fields of the data */
-void free_all_data(data_of_program *data);
+void free_all_data(ProgramInfo *data);
 
 /****** BUILT-IN COMMANDS ******/
 
 /* Close the shell */
-int builtin_exit(data_of_program *data);
+int builtin_exit(ProgramInfo *data);
 
 /* Change the current directory */
-int builtin_cd(data_of_program *data);
+int builtin_cd(ProgramInfo *data);
 
 /* Set the working directory */
-int set_work_directory(data_of_program *data, char *new_dir);
+int set_work_directory(ProgramInfo *data, char *new_dir);
 
 /* Display help information */
-int builtin_help(data_of_program *data);
+int builtin_help(ProgramInfo *data);
 
 /* Set, unset, and show aliases */
-int builtin_alias(data_of_program *data);
+int builtin_alias(ProgramInfo *data);
 
 /* Show the environment where the shell runs */
-int builtin_env(data_of_program *data);
+int builtin_env(ProgramInfo *data);
 
 /* Create or override an environment variable */
-int builtin_set_env(data_of_program *data);
+int builtin_set_env(ProgramInfo *data);
 
 /* Delete an environment variable */
-int builtin_unset_env(data_of_program *data);
+int builtin_unset_env(ProgramInfo *data);
 
 /******** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT ********/
 
 /* Get the value of an environment variable */
-char *env_get_key(char *name, data_of_program *data);
+char *env_get_key(char *name, ProgramInfo *data);
 
 /* Overwrite the value of an environment variable */
-int env_set_key(char *key, char *value, data_of_program *data);
+int env_set_key(char *key, char *value, ProgramInfo *data);
 
 /* Remove a key from the environment */
-int env_remove_key(char *key, data_of_program *data);
+int env_remove_key(char *key, ProgramInfo *data);
 
 /* Print the current environment */
-void print_environ(data_of_program *data);
+void print_environ(ProgramInfo *data);
 
 /****** HELPERS FOR PRINTING ******/
 
@@ -157,7 +157,7 @@ int _print(char *string);
 int _printe(char *string);
 
 /* Print a string to standard error with an error code */
-int _print_error(int errorcode, data_of_program *data);
+int _print_error(int errorcode, ProgramInfo *data);
 
 /************ HELPERS FOR STRING MANAGEMENT ***********/
 
@@ -190,13 +190,13 @@ int count_characters(char *string, char *character);
 /****** ALIAS MANAGEMENT ******/
 
 /* Print the list of aliases */
-int print_alias(data_of_program *data, char *alias);
+int print_alias(ProgramInfo *data, char *alias);
 
 /* Get the alias name */
-char *get_alias(data_of_program *data, char *alias);
+char *get_alias(ProgramInfo *data, char *alias);
 
 /* Set the alias name */
-int set_alias(char *alias_string, data_of_program *data);
+int set_alias(char *alias_string, ProgramInfo *data);
 
 #endif /* MAIN_H */
 

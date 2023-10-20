@@ -10,8 +10,8 @@
  */
 int main(int argc, char *argv[], char *env[])
 {
-	data_of_program data_struct = {NULL};
-	data_of_program *data = &data_struct;
+	ProgramInfo data_struct = {NULL};
+	ProgramInfo *data = &data_struct;
 	char *prompt = "";
 
 	initialize_data(data, argc, argv, env);
@@ -48,23 +48,23 @@ void handle_ctrl_c(int opr UNUSED)
  * @env: Environment variables.
  * @argc: Number of values received from the command line.
  */
-void initialize_data(data_of_program *data, int argc, char *argv[], char **env)
+void initialize_data(ProgramInfo *data, int argc, char *argv[], char **env)
 {
 	int i = 0;
 
-	data->program_name = argv[0];
-	data->input_line = NULL;
-	data->command_name = NULL;
-	data->exec_counter = 0;
+	data->name = argv[0];
+	data->input = NULL;
+	data->currentCommand = NULL;
+	data->executionCount = 0;
 
 	if (argc == 1)
-		data->file_descriptor = STDIN_FILENO;
+		data->fd = STDIN_FILENO;
 	else
 	{
-		data->file_descriptor = open(argv[1], O_RDONLY);
-		if (data->file_descriptor == -1)
+		data->fd = open(argv[1], O_RDONLY);
+		if (data->fd == -1)
 		{
-			_printe(data->program_name);
+			_printe(data->name);
 			_printe(": Can't open ");
 			_printe(argv[1]);
 			_printe("\n");
@@ -72,7 +72,7 @@ void initialize_data(data_of_program *data, int argc, char *argv[], char **env)
 		}
 	}
 
-	data->tokens = NULL;
+	data->arguments = NULL;
 	data->env = malloc(sizeof(char *) * 50);
 	if (env)
 	{
@@ -83,10 +83,10 @@ void initialize_data(data_of_program *data, int argc, char *argv[], char **env)
 	}
 	data->env[i] = NULL;
 
-	data->alias_list = malloc(sizeof(char *) * 20);
+	data->aliases = malloc(sizeof(char *) * 20);
 	for (i = 0; i < 20; i++)
 	{
-		data->alias_list[i] = NULL;
+		data->aliases[i] = NULL;
 	}
 }
 
@@ -97,11 +97,11 @@ void initialize_data(data_of_program *data, int argc, char *argv[], char **env)
  * @prompt: The prompt to print.
  * @data: Pointer to program data.
  */
-void our_prompt(char *prompt, data_of_program *data)
+void our_prompt(char *prompt, ProgramInfo *data)
 {
 	int error_code = 0, strings_len = 0;
 
-	while (++(data->exec_counter))
+	while (++(data->executionCount))
 	{
 		_print(prompt);
 		error_code = strings_len = _getline(data);
@@ -116,7 +116,7 @@ void our_prompt(char *prompt, data_of_program *data)
 			expand_alias(data);
 			expand_variables(data);
 			tokenize(data);
-			if (data->tokens[0])
+			if (data->arguments[0])
 			{
 				error_code = execute(data);
 				if (error_code != 0)
