@@ -41,7 +41,7 @@ int find_program(ProgramInfo *data)
 		return (check_file(data->currentCommand));
 
 	free(data->arguments[0]);
-	data->arguments[0] = str_concat(str_duplicate("/"), data->currentCommand);
+	data->arguments[0] = _strcat(_strdup("/"), data->currentCommand);
 	if (!data->arguments[0])
 		return (2);
 
@@ -55,13 +55,13 @@ int find_program(ProgramInfo *data)
 
 	for (i = 0; directories[i]; i++)
 	{
-		directories[i] = str_concat(directories[i], data->arguments[0]);
+		directories[i] = _strcat(directories[i], data->arguments[0]);
 		ret_code = check_file(directories[i]);
 		if (ret_code == 0 || ret_code == 126)
 		{
 			errno = 0;
 			free(data->arguments[0]);
-			data->arguments[0] = str_duplicate(directories[i]);
+			data->arguments[0] = _strdup(directories[i]);
 			free_array_of_pointers(directories);
 			return (ret_code);
 		}
@@ -93,7 +93,7 @@ char **tokenize_path(ProgramInfo *data)
 		return (NULL);
 	}
 
-	PATH = str_duplicate(PATH);
+	PATH = _strdup(PATH);
 
 	for (i = 0; PATH[i]; i++)
 	{
@@ -104,11 +104,11 @@ char **tokenize_path(ProgramInfo *data)
 	arguments = malloc(sizeof(char *) * num_directories);
 
 	i = 0;
-	arguments[i] = str_duplicate(_strtok(PATH, ":"));
+	arguments[i] = _strdup(_strtok(PATH, ":"));
 
 	while (arguments[i++])
 	{
-		arguments[i] = str_duplicate(_strtok(NULL, ":"));
+		arguments[i] = _strdup(_strtok(NULL, ":"));
 	}
 
 	free(PATH);

@@ -19,7 +19,7 @@ int builtin_env(ProgramInfo *data)
 		{
 			if (data->arguments[1][i] == '=')
 			{
-				var_copy = str_duplicate(env_get_key(cpname, data));
+				var_copy = _strdup(env_get_key(cpname, data));
 				if (var_copy != NULL)
 					env_set_key(cpname, data->arguments[1] + i + 1, data);
 

@@ -33,7 +33,7 @@ int _getline(ProgramInfo *data)
 		/* Split lines by '\n' or ';' */
 		i = 0;
 		do {
-			array_commands[i] = str_duplicate(_strtok(i ? NULL : buff, "\n;"));
+			array_commands[i] = _strdup(_strtok(i ? NULL : buff, "\n;"));
 			/* Check and split for '&&' and '||' operators */
 			i = logic_type_ops(array_commands, i, array_operators);
 		} while (array_commands[i++]);
@@ -47,7 +47,7 @@ int _getline(ProgramInfo *data)
 		array_operators[i] = array_operators[i + 1];
 	}
 
-	return (str_length(data->input));
+	return (_strlen(data->input));
 }
 
 /**
@@ -71,8 +71,8 @@ int logic_type_ops(char *array_commands[], int i, char array_operators[])
 			/* Split the line when '&&' is found */
 			temp = array_commands[i];
 			array_commands[i][j] = '\0';
-			array_commands[i] = str_duplicate(array_commands[i]);
-			array_commands[i + 1] = str_duplicate(temp + j + 2);
+			array_commands[i] = _strdup(array_commands[i]);
+			array_commands[i + 1] = _strdup(temp + j + 2);
 			i++;
 			array_operators[i] = '&';
 			free(temp);
@@ -83,8 +83,8 @@ int logic_type_ops(char *array_commands[], int i, char array_operators[])
 			/* Split the line when '||' is found */
 			temp = array_commands[i];
 			array_commands[i][j] = '\0';
-			array_commands[i] = str_duplicate(array_commands[i]);
-			array_commands[i + 1] = str_duplicate(temp + j + 2);
+			array_commands[i] = _strdup(array_commands[i]);
+			array_commands[i + 1] = _strdup(temp + j + 2);
 			i++;
 			array_operators[i] = '|';
 			free(temp);

@@ -78,7 +78,7 @@ void init_data(ProgramInfo *data, int argc, char *argv[], char **env)
 	{
 		for (; env[i]; i++)
 		{
-			data->env[i] = str_duplicate(env[i]);
+			data->env[i] = _strdup(env[i]);
 		}
 	}
 	data->env[i] = NULL;
@@ -108,7 +108,7 @@ void _prompt(char *prompt, ProgramInfo *data)
 
 		if (error_code == EOF)
 		{
-			free_all_data(data);
+			free_data(data);
 			exit(errno);
 		}
 		if (strings_len >= 1)

@@ -15,12 +15,12 @@ char *env_get_key(char *key, ProgramInfo *data)
 		return (NULL);
 
 	/* Obtain the length of the requested variable. */
-	key_length = str_length(key);
+	key_length = _strlen(key);
 
 	for (i = 0; data->env[i]; i++)
 	{
 		/* Iterate through the environment and check for a variable match. */
-		if (str_compare(key, data->env[i], key_length) &&
+		if (_strcmp(key, data->env[i], key_length) &&
 		    data->env[i][key_length] == '=')
 		{
 			/* Return the value of the key NAME= when found. */
@@ -47,12 +47,12 @@ int env_set_key(char *key, char *value, ProgramInfo *data)
 		return (1);
 
 	/* Obtain the length of the variable requested. */
-	key_length = str_length(key);
+	key_length = _strlen(key);
 
 	for (i = 0; data->env[i]; i++)
 	{
 		/* Iterate through the environment and check for a variable match. */
-		if (str_compare(key, data->env[i], key_length) &&
+		if (_strcmp(key, data->env[i], key_length) &&
 		    data->env[i][key_length] == '=')
 		{
 			/* Indicate that the key already exists. */
@@ -64,8 +64,8 @@ int env_set_key(char *key, char *value, ProgramInfo *data)
 	}
 
 	/* Create a string in the form key=value. */
-	data->env[i] = str_concat(str_duplicate(key), "=");
-	data->env[i] = str_concat(data->env[i], value);
+	data->env[i] = _strcat(_strdup(key), "=");
+	data->env[i] = _strcat(data->env[i], value);
 
 	if (is_new_key)
 	{
@@ -93,12 +93,12 @@ int env_remove_key(char *key, ProgramInfo *data)
 		return (0);
 
 	/* Obtain the length of the variable requested. */
-	key_length = str_length(key);
+	key_length = _strlen(key);
 
 	for (i = 0; data->env[i]; i++)
 	{
 		/* Iterate through the environment and check for matches. */
-		if (str_compare(key, data->env[i], key_length) &&
+		if (_strcmp(key, data->env[i], key_length) &&
 		    data->env[i][key_length] == '=')
 		{
 			/* Indicate that the key already exists, and remove it. */

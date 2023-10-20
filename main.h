@@ -106,7 +106,7 @@ void free_array_of_pointers(char **directories);
 void free_recurrent_data(ProgramInfo *data);
 
 /* Free all fields of the data */
-void free_all_data(ProgramInfo *data);
+void free_data(ProgramInfo *data);
 
 /****** BUILT-IN COMMANDS ******/
 
@@ -134,7 +134,7 @@ int builtin_set_env(ProgramInfo *data);
 /* Delete an environment variable */
 int builtin_unset_env(ProgramInfo *data);
 
-/******** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT ********/
+/******** ENVIRONMENT VARIABLES MANAGEMENT AIDS********/
 
 /* Get the value of an environment variable */
 char *env_get_key(char *name, ProgramInfo *data);
@@ -148,7 +148,7 @@ int env_remove_key(char *key, ProgramInfo *data);
 /* Print the current environment */
 void print_environ(ProgramInfo *data);
 
-/****** HELPERS FOR PRINTING ******/
+/****** PRINTING AIDS ******/
 
 /* Print a string to standard output */
 int _print(char *string);
@@ -159,24 +159,24 @@ int _printe(char *string);
 /* Print a string to standard error with an error code */
 int _print_error(int errorcode, ProgramInfo *data);
 
-/************ HELPERS FOR STRING MANAGEMENT ***********/
+/************ STRING MANAGEMENT ***********/
 
 /* Count the number of characters in a string */
-int str_length(char *string);
+int _strlen(char *string);
 
 /* Duplicate a string */
-char *str_duplicate(char *string);
+char *_strdup(char *string);
 
 /* Compare two strings */
-int str_compare(char *string1, char *string2, int number);
+int _strcmp(char *string1, char *string2, int number);
 
 /* Concatenate two strings */
-char *str_concat(char *string1, char *string2);
+char *_strcat(char *string1, char *string2);
 
 /* Reverse a string */
-void str_reverse(char *string);
+void revstring(char *string);
 
-/****** HELPERS FOR NUMBERS MANAGEMENT **********/
+/****** NUMBERS MANAGEMENT **********/
 
 /* Convert a long integer to a string */
 void long_to_string(long number, char *string, int base);

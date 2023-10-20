@@ -25,7 +25,7 @@ int builtin_exit(ProgramInfo *data)
 	}
 
 	/* Free allocated memory and exit with the specified status. */
-	free_all_data(data);
+	free_data(data);
 	exit(errno);
 }
 
@@ -43,7 +43,7 @@ int builtin_cd(ProgramInfo *data)
 
 	if (data->arguments[1])
 	{
-		if (str_compare(data->arguments[1], "-", 0))
+		if (_strcmp(data->arguments[1], "-", 0))
 		{
 			dir_old = env_get_key("OLDPWD", data);
 			if (dir_old)
@@ -79,7 +79,7 @@ int set_work_directory(ProgramInfo *data, char *new_dir)
 
 	getcwd(old_dir, 128);
 
-	if (!str_compare(old_dir, new_dir, 0))
+	if (!_strcmp(old_dir, new_dir, 0))
 	{
 		err_code = chdir(new_dir);
 		if (err_code == -1)
@@ -94,7 +94,7 @@ int set_work_directory(ProgramInfo *data, char *new_dir)
 }
 
 /**
- * builtin_help - Display information about built-in commands.
+ * _help - Display information about built-in commands.
  * @data: The struct for the program's data.
  * Return: Returns zero on success, or an error code if specified.
  */
@@ -126,8 +126,8 @@ int builtin_help(ProgramInfo *data)
 
 	for (i = 0; messages[i]; i++)
 	{
-		length = str_length(data->arguments[1]);
-		if (str_compare(data->arguments[1], messages[i], length))
+		length = _strlen(data->arguments[1]);
+		if (_strcmp(data->arguments[1], messages[i], length))
 		{
 			_print(messages[i] + length + 1);
 			return 1;

@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * str_length - Get the length of a string.
+ * _strlen - Get the length of a string.
  *
  * @string: Pointer to the string.
  * Return: Length of the string.
  */
-int str_length(char *string)
+int _strlen(char *string)
 {
 	int length = 0;
 
@@ -20,12 +20,12 @@ int str_length(char *string)
 }
 
 /**
- * str_duplicate - Duplicate a string.
+ * _strdup - Duplicate a string.
  *
  * @string: String to be duplicated.
  * Return: Pointer to the duplicated string.
  */
-char *str_duplicate(char *string)
+char *_strdup(char *string)
 {
 	char *result;
 	int length, i;
@@ -33,7 +33,7 @@ char *str_duplicate(char *string)
 	if (string == NULL)
 		return (NULL);
 
-	length = str_length(string) + 1;
+	length = _strlen(string) + 1;
 
 	result = malloc(sizeof(char) * length);
 
@@ -52,14 +52,14 @@ char *str_duplicate(char *string)
 }
 
 /**
- * str_compare - Compare two strings.
+ * _strcmp - Compare two strings.
  *
  * @string3: String one, or the shorter one.
  * @string4: String two, or the longer one.
  * @number: The number of characters to be compared, 0 for infinite.
  * Return: 1 if the strings are equal, 0 if they are different.
  */
-int str_compare(char *string3, char *string4, int number)
+int _strcmp(char *string3, char *string4, int number)
 {
 	int iterator;
 
@@ -71,7 +71,7 @@ int str_compare(char *string3, char *string4, int number)
 
 	if (number == 0) /* Infinite length */
 	{
-		if (str_length(string3) != str_length(string4))
+		if (_strlen(string3) != _strlen(string4))
 			return (0);
 		for (iterator = 0; string3[iterator]; iterator++)
 		{
@@ -92,25 +92,25 @@ int str_compare(char *string3, char *string4, int number)
 }
 
 /**
- * str_concat - Concatenate two strings.
+ * _strcat - Concatenate two strings.
  *
  * @string3: String to be concatenated.
  * @string4: String to be concatenated.
  *
  * Return: Pointer to the concatenated string.
  */
-char *str_concat(char *string3, char *string4)
+char *_strcat(char *string3, char *string4)
 {
 	char *result;
 	int length1 = 0, length2 = 0;
 
 	if (string3 == NULL)
 		string3 = "";
-	length1 = str_length(string3);
+	length1 = _strlen(string3);
 
 	if (string4 == NULL)
 		string4 = "";
-	length2 = str_length(string4);
+	length2 = _strlen(string4);
 
 	result = malloc(sizeof(char) * (length1 + length2 + 1));
 	if (result == NULL)
@@ -137,14 +137,14 @@ char *str_concat(char *string3, char *string4)
 }
 
 /**
- * str_reverse - Reverse a string.
+ * revstring - Reverse a string.
  *
  * @string: Pointer to the string.
  * Return: Void.
  */
-void str_reverse(char *string)
+void revstring(char *string)
 {
-	int i = 0, length = str_length(string) - 1;
+	int i = 0, length = _strlen(string) - 1;
 	char hold;
 
 	while (i < length)

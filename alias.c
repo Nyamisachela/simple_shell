@@ -13,10 +13,10 @@ int print_alias(ProgramInfo *data, char *alias)
 
 	if (data->aliases)
 	{
-		alias_length = str_length(alias);
+		alias_length = _strlen(alias);
 		for (i = 0; data->aliases[i]; i++)
 		{
-			if (!alias || (str_compare(data->aliases[i], alias, alias_length)
+			if (!alias || (_strcmp(data->aliases[i], alias, alias_length)
 				&&	data->aliases[i][alias_length] == '='))
 			{
 				for (j = 0; data->aliases[i][j]; j++)
@@ -50,11 +50,11 @@ char *get_alias(ProgramInfo *data, char *name)
 	if (name == NULL || data->aliases == NULL)
 		return (NULL);
 
-	alias_length = str_length(name);
+	alias_length = _strlen(name);
 
 	for (i = 0; data->aliases[i]; i++)
 	{
-		if (str_compare(name, data->aliases[i], alias_length) &&
+		if (_strcmp(name, data->aliases[i], alias_length) &&
 			data->aliases[i][alias_length] == '=')
 		{
 			return (data->aliases[i] + alias_length + 1);
@@ -91,7 +91,7 @@ int set_alias(char *alias_string, ProgramInfo *data)
 
 	for (j = 0; data->aliases[j]; j++)
 	{
-		if (str_compare(buffer, data->aliases[j], i) &&
+		if (_strcmp(buffer, data->aliases[j], i) &&
 			data->aliases[j][i] == '=')
 		{
 			free(data->aliases[j]);
@@ -103,11 +103,11 @@ int set_alias(char *alias_string, ProgramInfo *data)
 	{
 		add_to_buffer(buffer, "=");
 		add_to_buffer(buffer, temp);
-		data->aliases[j] = str_duplicate(buffer);
+		data->aliases[j] = _strdup(buffer);
 	}
 	else
 	{
-		data->aliases[j] = str_duplicate(alias_string);
+		data->aliases[j] = _strdup(alias_string);
 	}
 
 	return (0);

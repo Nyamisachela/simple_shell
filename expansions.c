@@ -48,10 +48,10 @@ void concat_variables(ProgramInfo *data)
 		}
 	}
 
-	if (!str_compare(data->input, line, 0))
+	if (!_strcmp(data->input, line, 0))
 	{
 		free(data->input);
-		data->input = str_duplicate(line);
+		data->input = _strdup(line);
 	}
 }
 
@@ -83,7 +83,7 @@ void expand_alias(ProgramInfo *data)
 			add_to_buffer(expansion, line + i + j);
 			line[i] = '\0';
 			add_to_buffer(line, temp);
-			line[str_length(line)] = '\0';
+			line[_strlen(line)] = '\0';
 			add_to_buffer(line, expansion);
 			is_expanded = 1;
 		}
@@ -93,7 +93,7 @@ void expand_alias(ProgramInfo *data)
 	if (is_expanded)
 	{
 		free(data->input);
-		data->input = str_duplicate(line);
+		data->input = _strdup(line);
 	}
 }
 
@@ -107,7 +107,7 @@ int add_to_buffer (char *buffer, char *str_to_add)
 {
 	int length, i;
 
-	length = str_length(buffer);
+	length = _strlen(buffer);
 
 	for (i = 0; str_to_add[i]; i++)
 	{

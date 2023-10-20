@@ -16,7 +16,7 @@ void tokenize(ProgramInfo *data)
 	int i, j, counter = 2, length;
 
 	/* Remove the newline character if present at the end of the input line */
-	length = str_length(data->input);
+	length = _strlen(data->input);
 	if (length > 0 && data->input[length - 1] == '\n')
 		data->input[length - 1] = '\0';
 
@@ -39,14 +39,14 @@ void tokenize(ProgramInfo *data)
 	}
 
 	i = 0;
-	data->arguments[i] = str_duplicate(_strtok(data->input, delimiter));
+	data->arguments[i] = _strdup(_strtok(data->input, delimiter));
 
 	/* Set the command name to the first token */
-	data->currentCommand = str_duplicate(data->arguments[0]);
+	data->currentCommand = _strdup(data->arguments[0]);
 
 	/* Tokenize the rest of the input line */
 	while (data->arguments[i++])
 	{
-		data->arguments[i] = str_duplicate(_strtok(NULL, delimiter));
+		data->arguments[i] = _strdup(_strtok(NULL, delimiter));
 	}
 }

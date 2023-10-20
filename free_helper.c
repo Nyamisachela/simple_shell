@@ -20,11 +20,11 @@ void free_recurrent_data(ProgramInfo *data)
 }
 
 /**
- * free_all_data - Free all fields of the data structure.
+ * free_data - Free all fields of the data structure.
  * @data: A pointer to the program's data.
  * Return: This function has no return value.
  */
-void free_all_data(ProgramInfo *data)
+void free_data(ProgramInfo *data)
 {
 	if (data->fd != 0)
 	{
