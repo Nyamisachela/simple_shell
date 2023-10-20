@@ -56,10 +56,10 @@ typedef struct builtins
 /***** MAIN FUNCTIONS ******/
 
 /* Initialize the struct with program data */
-void inicialize_data(data_of_program *data, int argc, char *argv[], char **env);
+void initialize_data(data_of_program *data, int argc, char *argv[], char **env);
 
 /* Create an infinite loop that displays the prompt */
-void sisifo(char *prompt, data_of_program *data);
+void our_prompt(char *prompt, data_of_program *data);
 
 /* Print the prompt in a new line */
 void handle_ctrl_c(int operation UNUSED);
