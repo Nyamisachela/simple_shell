@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * concat_variables - Expand variables in the input line.

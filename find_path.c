@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * check_file - Check if file exists, is not a dir,has execute permissions.

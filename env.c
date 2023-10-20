@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * builtin_env - Display the environment where the shell is running.

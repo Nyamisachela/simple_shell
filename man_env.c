@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * env_get_key - Get the value of an environment variable.

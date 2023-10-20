@@ -1,5 +1,5 @@
-#ifndef HELPERS_H
-#define HELPERS_H
+#ifndef MACROS_H_
+#define MACROS_H_
 
 /* Prompt to be printed */
 #define PROMPT_MSG ">_ " /* Needed to work with signal */
