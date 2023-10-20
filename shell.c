@@ -14,9 +14,9 @@ int main(int argc, char *argv[], char *env[])
 	ProgramInfo *data = &data_struct;
 	char *prompt = "";
 
-	initialize_data(data, argc, argv, env);
+	init_data(data, argc, argv, env);
 
-	signal(SIGINT, handle_ctrl_c);
+	signal(SIGINT, _ctrl_c);
 
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO) && argc == 1)
 	{
@@ -24,17 +24,17 @@ int main(int argc, char *argv[], char *env[])
 		prompt = PROMPT_MSG;
 	}
 	errno = 0;
-	our_prompt(prompt, data);
+	_prompt(prompt, data);
 	return (0);
 }
 
 /**
- * handle_ctrl_c - Handles the SIGINT (Ctrl+C) signal 
+ * _ctrl_c - Handles the SIGINT (Ctrl+C) signal 
  * by printing the prompt in a new line.
  *
  * @opr: Unused parameter.
  */
-void handle_ctrl_c(int opr UNUSED)
+void _ctrl_c(int opr UNUSED)
 {
 	_print("\n");
 	_print(PROMPT_MSG);
@@ -48,7 +48,7 @@ void handle_ctrl_c(int opr UNUSED)
  * @env: Environment variables.
  * @argc: Number of values received from the command line.
  */
-void initialize_data(ProgramInfo *data, int argc, char *argv[], char **env)
+void init_data(ProgramInfo *data, int argc, char *argv[], char **env)
 {
 	int i = 0;
 
@@ -91,13 +91,13 @@ void initialize_data(ProgramInfo *data, int argc, char *argv[], char **env)
 }
 
 /**
- * our_prompt - Starts an infinite loop 
+ * _prompt - Starts an infinite loop 
  * that displays the prompt and handles user input.
  *
  * @prompt: The prompt to print.
  * @data: Pointer to program data.
  */
-void our_prompt(char *prompt, ProgramInfo *data)
+void _prompt(char *prompt, ProgramInfo *data)
 {
 	int error_code = 0, strings_len = 0;
 
@@ -114,11 +114,11 @@ void our_prompt(char *prompt, ProgramInfo *data)
 		if (strings_len >= 1)
 		{
 			expand_alias(data);
-			expand_variables(data);
+			concat_variables(data);
 			tokenize(data);
 			if (data->arguments[0])
 			{
-				error_code = execute(data);
+				error_code = cmd_execute(data);
 				if (error_code != 0)
 					_print_error(error_code, data);
 			}

@@ -26,9 +26,9 @@ int print_alias(ProgramInfo *data, char *alias)
 						break;
 				}
 				buffer[j + 1] = '\0';
-				buffer_add(buffer, "'");
-				buffer_add(buffer, data->aliases[i] + j + 1);
-				buffer_add(buffer, "'\n");
+				add_to_buffer(buffer, "'");
+				add_to_buffer(buffer, data->aliases[i] + j + 1);
+				add_to_buffer(buffer, "'\n");
 				_print(buffer);
 			}
 		}
@@ -101,8 +101,8 @@ int set_alias(char *alias_string, ProgramInfo *data)
 
 	if (temp)
 	{
-		buffer_add(buffer, "=");
-		buffer_add(buffer, temp);
+		add_to_buffer(buffer, "=");
+		add_to_buffer(buffer, temp);
 		data->aliases[j] = str_duplicate(buffer);
 	}
 	else

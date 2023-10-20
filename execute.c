@@ -5,7 +5,7 @@
  * @data: A pointer to the program's data.
  * Return: Returns 0 on success, or -1 on failure.
  */
-int execute(ProgramInfo *data)
+int cmd_execute(ProgramInfo *data)
 {
 	int retval = 0, status;
 	pid_t child_pid;

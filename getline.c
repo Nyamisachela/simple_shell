@@ -35,7 +35,7 @@ int _getline(ProgramInfo *data)
 		do {
 			array_commands[i] = str_duplicate(_strtok(i ? NULL : buff, "\n;"));
 			/* Check and split for '&&' and '||' operators */
-			i = check_logic_ops(array_commands, i, array_operators);
+			i = logic_type_ops(array_commands, i, array_operators);
 		} while (array_commands[i++]);
 	}
 
@@ -51,14 +51,14 @@ int _getline(ProgramInfo *data)
 }
 
 /**
-* check_logic_ops - Check and split for '&&' and '||' operators.
+* logic_type_ops - Check and split for '&&' and '||' operators.
 * @array_commands: Array of commands.
 * @i: Index in the array_commands to be checked.
 * @array_operators: Array of logical operators for each previous command.
 *
 * Return: Index of the last command in array_commands.
 */
-int check_logic_ops(char *array_commands[], int i, char array_operators[])
+int logic_type_ops(char *array_commands[], int i, char array_operators[])
 {
 	char *temp = NULL;
 	int j;

@@ -56,28 +56,28 @@ typedef struct builtins
 /***** MAIN FUNCTIONS ******/
 
 /* Initialize the struct with program data */
-void initialize_data(ProgramInfo *data, int argc, char *argv[], char **env);
+void init_data(ProgramInfo *data, int argc, char *argv[], char **env);
 
 /* Create an infinite loop that displays the prompt */
-void our_prompt(char *prompt, ProgramInfo *data);
+void _prompt(char *prompt, ProgramInfo *data);
 
 /* Print the prompt in a new line */
-void handle_ctrl_c(int operation UNUSED);
+void _ctrl_c(int operation UNUSED);
 
 /* Read one line from standard input */
 int _getline(ProgramInfo *data);
 
 /* Split each line by logical operators if they exist */
-int check_logic_ops(char *array_commands[], int i, char array_operators[]);
+int logic_type_ops(char *array_commands[], int i, char array_operators[]);
 
 /* Expand variables */
-void expand_variables(ProgramInfo *data);
+void concat_variables(ProgramInfo *data);
 
 /* Expand aliases */
 void expand_alias(ProgramInfo *data);
 
 /* Append a string to the end of the buffer */
-int buffer_add(char *buffer, char *str_to_add);
+int add_to_buffer(char *buffer, char *str_to_add);
 
 /* Separate a string into tokens using a specified delimiter */
 void tokenize(ProgramInfo *data);
@@ -86,7 +86,7 @@ void tokenize(ProgramInfo *data);
 char *_strtok(char *line, char *delim);
 
 /* Execute a command with its entire path */
-int execute(ProgramInfo *data);
+int cmd_execute(ProgramInfo *data);
 
 /* Match a built-in command and execute it */
 int builtins_list(ProgramInfo *data);
